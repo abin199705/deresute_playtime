@@ -9,6 +9,8 @@ import sys
 from PyQt5 import QtCore, QtGui
 from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QLabel, QPushButton, QHBoxLayout, QVBoxLayout ,QGroupBox
 from PyQt5.QtCore import QTimer
+from PyQt5.QtGui import QPixmap
+from datetime import timedelta
 
 class Ui_MainWindow(QWidget):
     def __init__(self):
@@ -21,7 +23,6 @@ class Ui_MainWindow(QWidget):
         self.fullcombo_label = QLabel()
         self.fullcomboshow_label = QLabel()
         
-        
         self.playtimeshow_text = 0
         self.fullcomboshow_text = 0
 
@@ -29,7 +30,6 @@ class Ui_MainWindow(QWidget):
         self.playtime_Button = QPushButton()
         self.fullcombo_Button = QPushButton()
         
-  
         self.combine_1 = QHBoxLayout()
         self.combine_2 = QHBoxLayout()
         self.combine_3 = QHBoxLayout()
@@ -50,12 +50,19 @@ class Ui_MainWindow(QWidget):
         # Other
         self.timer.timeout.connect(self.timestart)
         self.timeshow_text = 0
-        
+                
+        palette1 = QtGui.QPalette()
+        palette1.setBrush(self.backgroundRole(), QtGui.QBrush(QtGui.QPixmap('./image/19_n.jpg')))   # 设置背景图片
+        self.setPalette(palette1)
         
         self.layout_init()      
         self.signal_init()
         self.retranslateUi()
-
+        
+        #self.resize(1080,900)
+        self.setFixedSize(1080, 900)
+        
+        
     def layout_init(self):
         
         self.combine_1.addWidget(self.time_label, 1)
@@ -89,7 +96,7 @@ class Ui_MainWindow(QWidget):
         self.setWindowTitle("deresute_play")
         # self.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.time_label.setText(_translate("MainWindow", "時間"))
-        self.timeshow_label.setText(_translate("MainWindow", "00:00:00"))
+        self.timeshow_label.setText(_translate("MainWindow", "0:00:00"))
         self.playtime_label.setText(_translate("MainWindow", "總次數"))
         self.playtimeshow_label.setText(_translate("MainWindow", "0"))
         self.fullcombo_label.setText(_translate("MainWindow", "FC次數"))
@@ -103,9 +110,12 @@ class Ui_MainWindow(QWidget):
         self.timer.stop()
 
     def timestart(self):
+        
         self.timer.start(100)
         self.timeshow_text += 1
-        self.timeshow_label.setText(f'{self.timeshow_text}')
+        self.t =self.timeshow_text // 10
+        self.dis_time =str(timedelta(seconds=self.t))       
+        self.timeshow_label.setText(f'{self.dis_time}')
     
     def playtime_clicked(self):
         
